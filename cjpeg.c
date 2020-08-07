@@ -496,6 +496,67 @@ parse_switches(j_compress_ptr cinfo, int argc, char **argv,
 }
 
 
+int
+encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
+                 unsigned long out_buf_sz,
+                 int image_width, int image_height)
+{
+  struct jpeg_compress_struct cinfo;
+  struct jpeg_error_mgr jerr;
+#ifdef PROGRESS_REPORT
+  struct cdjpeg_progress_mgr progress;
+#endif
+
+  /* Initialize the JPEG compression object with default error handling. */
+  cinfo.err = jpeg_std_error(&jerr);
+  jpeg_create_compress(&cinfo);
+  /* Add some application-specific error messages (from cderror.h) */
+  jerr.addon_message_table = cdjpeg_message_table;
+  jerr.first_addon_message = JMSG_FIRSTADDONCODE;
+  jerr.last_addon_message = JMSG_LASTADDONCODE;
+
+  /* Initialize JPEG parameters.
+   * Much of this may be overridden later.
+   * In particular, we don't yet know the input file's color space,
+   * but we need to provide some value for jpeg_set_defaults() to work.
+   */
+
+  cinfo.image_width = image_width;
+  cinfo.image_height = image_height;
+  cinfo.input_components = 1;
+  cinfo.in_color_space = JCS_GRAYSCALE; /* arbitrary guess */
+  jpeg_set_defaults(&cinfo);
+
+#ifdef PROGRESS_REPORT
+  start_progress_monitor((j_common_ptr)&cinfo, &progress);
+#endif
+
+  /* Specify data destination for compression */
+  jpeg_mem_dest(&cinfo, &out_buf, &out_buf_sz);
+
+  /* Start compressor */
+  jpeg_start_compress(&cinfo, TRUE);
+
+  unsigned char *buf[3]; //96
+  int cnt = 0;
+  while (cinfo.next_scanline < cinfo.image_height) {
+      buf[0] = in_buf + cinfo.image_width * cnt;
+      cnt++;
+      jpeg_write_scanlines(&cinfo, (JSAMPARRAY) buf, 1);
+  }
+
+  /* Finish compression and release memory */
+  jpeg_finish_compress(&cinfo);
+  jpeg_destroy_compress(&cinfo);
+
+#ifdef PROGRESS_REPORT
+  end_progress_monitor((j_common_ptr)&cinfo);
+#endif
+
+  /* All done. */
+  return 0;                     /* suppress no-return-value warnings */
+}
+
 /*
  * The main program.
  */
