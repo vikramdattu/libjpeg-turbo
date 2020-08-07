@@ -500,7 +500,7 @@ parse_switches(j_compress_ptr cinfo, int argc, char **argv,
 
 int
 encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
-                 unsigned long out_buf_sz,
+                 unsigned long *out_buf_sz,
                  int image_width, int image_height)
 {
   struct jpeg_compress_struct cinfo;
@@ -534,7 +534,7 @@ encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
 #endif
 
   /* Specify data destination for compression */
-  jpeg_mem_dest(&cinfo, &out_buf, &out_buf_sz);
+  jpeg_mem_dest(&cinfo, &out_buf, out_buf_sz);
 
   /* Start compressor */
   jpeg_start_compress(&cinfo, TRUE);

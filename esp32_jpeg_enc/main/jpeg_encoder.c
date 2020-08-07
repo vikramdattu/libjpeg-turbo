@@ -19,12 +19,12 @@ static const char *TAG = "jpeg_enc";
 
 /* Introduced by ESP. Encode raw mono-chrome image */
 int encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
-                     unsigned long out_buf_sz,
+                     unsigned long *out_buf_sz,
                      int image_width, int image_height);
 
 const int image_height = 96;
 const int image_width = 96;
-int out_buf_sz = image_width * image_height;
+unsigned long out_buf_sz = image_width * image_height;
 unsigned char input_buffer[96 * 96];
 unsigned char output_buffer[96 * 96];
 
@@ -32,11 +32,16 @@ static void jpeg_encoder_task(void *pvParameters)
 {
     (void) pvParameters;
 
+    /* Fill in image data. Random numbers for now. */
+    for (int i = 0; i < image_width * image_height; i++) {
+        input_buffer[i] = rand() % 256;
+    }
+
     ESP_LOGI(TAG, "Encoding an image");
 
-    encode_greyscale(input_buffer, output_buffer, out_buf_sz, image_width, image_height);
+    encode_greyscale(input_buffer, output_buffer, &out_buf_sz, image_width, image_height);
 
-    ESP_LOGI(TAG, "Encoded an image");
+    ESP_LOGI(TAG, "Encoded an image. out_size = %lu", out_buf_sz);
 
     vTaskDelete(NULL);
 }
