@@ -10,16 +10,16 @@
 #define LIBJPEG_TURBO_VERSION_NUMBER  2000006
 
 /* Support arithmetic encoding */
-#define C_ARITH_CODING_SUPPORTED 1
+#define C_ARITH_CODING_SUPPORTED 0
 
 /* Support arithmetic decoding */
-#define D_ARITH_CODING_SUPPORTED 1
+#define D_ARITH_CODING_SUPPORTED 0
 
 /* Support in-memory source/destination managers */
 #define MEM_SRCDST_SUPPORTED 1
 
 /* Use accelerated SIMD routines. */
-#define WITH_SIMD 1
+#define WITH_SIMD 0
 
 /*
  * Define BITS_IN_JSAMPLE as either
@@ -33,7 +33,7 @@
 #define BITS_IN_JSAMPLE  8      /* use 8 or 12 */
 
 /* Define to 1 if you have the <locale.h> header file. */
-#define HAVE_LOCALE_H 1
+#define HAVE_LOCALE_H 0
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
