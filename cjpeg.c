@@ -538,13 +538,10 @@ encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
   jpeg_start_compress(&cinfo, TRUE);
 
   unsigned char *buf[3]; //96
-  int cnt = 0;
   while (cinfo.next_scanline < cinfo.image_height) {
-      buf[0] = in_buf + cinfo.image_width * cnt;
-      cnt++;
+      buf[0] = in_buf + cinfo.image_width * cinfo.next_scanline;
       jpeg_write_scanlines(&cinfo, (JSAMPARRAY) buf, 1);
   }
-
   /* Finish compression and release memory */
   jpeg_finish_compress(&cinfo);
   jpeg_destroy_compress(&cinfo);
@@ -554,6 +551,7 @@ encode_greyscale(unsigned char *in_buf, unsigned char *out_buf,
 #endif
 
   /* All done. */
+  printf("Compressed size:  %lu bytes\n", *out_buf_sz);
   return 0;                     /* suppress no-return-value warnings */
 }
 
