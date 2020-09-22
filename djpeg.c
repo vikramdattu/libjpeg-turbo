@@ -836,3 +836,61 @@ main(int argc, char **argv)
   exit(jerr.num_warnings ? EXIT_WARNING : EXIT_SUCCESS);
   return 0;                     /* suppress no-return-value warnings */
 }
+
+/* self demo code <--not part of official libjpeg */
+int decode_greyscale(unsigned char *in_buf,unsigned long *in_buf_sz)
+{
+  struct jpeg_decompress_struct cinfo;
+  struct jpeg_error_mgr jerr;
+  #ifdef PROGRESS_REPORT
+  struct cdjpeg_progress_mgr progress;
+  #endif
+  /* Initialize the JPEG decompression object with default error handling. */
+  cinfo.err = jpeg_std_error(&jerr);
+  jpeg_create_decompress(&cinfo);
+  /* Add some application-specific error messages (from cderror.h) */
+  jerr.addon_message_table = cdjpeg_message_table;
+  jerr.first_addon_message = JMSG_FIRSTADDONCODE;
+  jerr.last_addon_message = JMSG_LASTADDONCODE;
+
+  /* Read file header, set default decompression parameters */
+  (void)jpeg_read_header(&cinfo, TRUE);
+
+  /*specify data source for decompression*/
+  jpeg_mem_src(&cinfo, &in_buf, &in_buf_sz);
+
+  /* Start decompressor */
+  (void)jpeg_start_decompress(&cinfo);
+
+
+  
+  unsigned char *buf[3];
+/* Process data */
+    while (cinfo.output_scanline < skip_start) {
+      buf[0] = jpeg_read_scanlines(&cinfo, in_buf,
+                                          in_buf_sz);
+      (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
+    }
+    /*if ((tmp = jpeg_skip_scanlines(&cinfo, skip_end - skip_start + 1)) != coversion code doubt
+        skip_end - skip_start + 1) {
+      fprintf(stderr, "%s: jpeg_skip_scanlines() returned %d rather than %d\n",
+              progname, tmp, skip_end - skip_start + 1);
+      exit(EXIT_FAILURE);
+    }
+    while (cinfo.output_scanline < cinfo.output_height) {
+      num_scanlines = jpeg_read_scanlines(&cinfo, dest_mgr->buffer,
+                                          dest_mgr->buffer_height);
+      (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
+    }*/
+
+
+
+  /*Finish decompression and release memory.*/
+  jpeg_finish_decompress(&cinfo);
+  jpeg_destroy_decompress(&cinfo);
+  #ifdef PROGRESS_REPORT
+  end_progress_monitor((j_common_ptr)&cinfo);
+  #endif
+  
+  return 0;
+}
