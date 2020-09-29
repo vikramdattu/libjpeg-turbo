@@ -676,10 +676,6 @@ main(int argc, char **argv)
     break;
   }
   dest_mgr->output_file = output_file;
-
-  /* Start decompressor */
-  (void)jpeg_start_decompress(&cinfo);
-
   /* Skip rows */
   if (skip) {
     JDIMENSION tmp;
@@ -836,3 +832,82 @@ main(int argc, char **argv)
   exit(jerr.num_warnings ? EXIT_WARNING : EXIT_SUCCESS);
   return 0;                     /* suppress no-return-value warnings */
 }
+
+/* self demo code <--not part of official libjpeg */
+int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *out_buf)
+{
+  djpeg_dest_ptr dest_mgr;
+  struct jpeg_decompress_struct cinfo;
+  struct jpeg_error_mgr jerr;
+  #ifdef PROGRESS_REPORT
+  struct cdjpeg_progress_mgr progress;
+  #endif
+  /* Initialize the JPEG decompression object with default error handling. */
+  cinfo.err = jpeg_std_error(&jerr);
+  jpeg_create_decompress(&cinfo);
+  /* Add some application-specific error messages (from cderror.h) */
+  jerr.addon_message_table = cdjpeg_message_table;
+  jerr.first_addon_message = JMSG_FIRSTADDONCODE;
+  jerr.last_addon_message = JMSG_LASTADDONCODE;
+
+  /* Read file header, set default decompression parameters */
+  (void)jpeg_read_header(&cinfo, TRUE);
+
+  /*specify data source for decompression*/
+  jpeg_mem_src(&cinfo, &in_buf, &in_buf_sz);
+
+  /* Start decompressor */
+  (void)jpeg_start_decompress(&cinfo);
+  
+  /*unsigned char *buf[3];*/
+  unsigned int num_scanlines;
+  /* Process data */
+  while(cinfo.output_scanline < cinfo.output_height) {
+     num_scanlines = jpeg_read_scanlines(&cinfo,out_buf,
+                                        1);
+     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);/*study this*/
+     
+  }
+
+  /*if ((tmp = jpeg_skip_scanlines(&cinfo, skip_end - skip_start + 1)) !=
+       skip_end - skip_start + 1) {
+     fprintf(stderr, "%s: jpeg_skip_scanlines() returned %d rather than %d\n",
+             progname, tmp, skip_end - skip_start + 1);
+    exit(EXIT_FAILURE);
+  }
+   while (cinfo.output_scanline < cinfo.output_height) {
+     num_scanlines = jpeg_read_scanlines(&cinfo,out_buf,
+                                        dest_mgr->buffer_height);
+     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
+   }*/
+
+
+  /*Finish decompression and release memory.*/
+  jpeg_finish_decompress(&cinfo);
+  jpeg_destroy_decompress(&cinfo);
+  #ifdef PROGRESS_REPORT
+  end_progress_monitor((j_common_ptr)&cinfo);
+  #endif
+  
+  return 0;
+}
+  /*
+  put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
+                JDIMENSION rows_supplied)
+  /* used for unquantized full-color output */
+  /*{
+    tga_dest_ptr dest = (tga_dest_ptr)dinfo;
+    register JSAMPROW inptr;
+    register char *outptr;
+    register JDIMENSION col;
+
+    inptr = dest->pub.buffer[0];
+    outptr = dest->iobuffer;
+    for (col = cinfo->output_width; col > 0; col--) {
+      outptr[0] = (char)GETJSAMPLE(inptr[2]); /* RGB to BGR order 
+      outptr[1] = (char)GETJSAMPLE(inptr[1]);
+      outptr[2] = (char)GETJSAMPLE(inptr[0]);
+      inptr += 3, outptr += 3;
+    }
+    (void)JFWRITE(dest->pub.output_file, dest->iobuffer, dest->buffer_width);
+  }*/
