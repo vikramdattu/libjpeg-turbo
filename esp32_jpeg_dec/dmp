@@ -1,0 +1,73 @@
+[1/4] Performing build step for 'bootloader'
+ninja: no work to do.
+[1/2] cd /home/suyash/esp/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH="/home/suyash/esp/esp-idf" -D ESPTOOLPY="/home/suyash/.espressif/python_env/idf4.3_py2.7_env/bin/python /home/suyash/esp/esp-idf/components/esptool_py/esptool/esptool.py --chip esp32" -D ESPTOOL_ARGS="--before=default_reset --after=hard_reset write_flash @flash_args" -D WORKING_DIRECTORY="/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec/build" -P /home/suyash/esp/esp-idf/components/esptool_py/run_esptool.cmake
+esptool.py --chip esp32 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0x1000 bootloader/bootloader.bin 0x10000 jpeg-enc.bin
+esptool.py v3.0-dev
+Serial port /dev/ttyUSB0
+Connecting.....
+Chip is ESP32D0WDQ5 (revision 1)
+Features: WiFi, BT, Single Core, Coding Scheme None
+Crystal is 40MHz
+MAC: 24:0a:c4:85:ff:e8
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Compressed 3072 bytes to 105...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (105 compressed) at 0x00008000 in 0.0 seconds (effective 3897.3 kbit/s)...
+Hash of data verified.
+Compressed 27888 bytes to 16710...
+Writing at 0x00001000... (50 %)
+Writing at 0x00005000... (100 %)
+Wrote 27888 bytes (16710 compressed) at 0x00001000 in 0.4 seconds (effective 546.4 kbit/s)...
+Hash of data verified.
+Compressed 903808 bytes to 598031...
+Writing at 0x00010000... (2 %)
+Writing at 0x00014000... (5 %)
+Writing at 0x00018000... (8 %)
+Writing at 0x0001c000... (10 %)
+Writing at 0x00020000... (13 %)
+Writing at 0x00024000... (16 %)
+Writing at 0x00028000... (18 %)
+Writing at 0x0002c000... (21 %)
+Writing at 0x00030000... (24 %)
+Writing at 0x00034000... (27 %)
+Writing at 0x00038000... (29 %)
+Writing at 0x0003c000... (32 %)
+Writing at 0x00040000... (35 %)
+Writing at 0x00044000... (37 %)
+Writing at 0x00048000... (40 %)
+Writing at 0x0004c000... (43 %)
+Writing at 0x00050000... (45 %)
+Writing at 0x00054000... (48 %)
+Writing at 0x00058000... (51 %)
+Writing at 0x0005c000... (54 %)
+Writing at 0x00060000... (56 %)
+Writing at 0x00064000... (59 %)
+Writing at 0x00068000... (62 %)
+Writing at 0x0006c000... (64 %)
+Writing at 0x00070000... (67 %)
+Writing at 0x00074000... (70 %)
+Writing at 0x00078000... (72 %)
+Writing at 0x0007c000... (75 %)
+Writing at 0x00080000... (78 %)
+Writing at 0x00084000... (81 %)
+Writing at 0x00088000... (83 %)
+Writing at 0x0008c000... (86 %)
+Writing at 0x00090000... (89 %)
+Writing at 0x00094000... (91 %)
+Writing at 0x00098000... (94 %)
+Writing at 0x0009c000... (97 %)
+Writing at 0x000a0000... (100 %)
+Wrote 903808 bytes (598031 compressed) at 0x00010000 in 13.6 seconds (effective 529.8 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+Executing action: flash
+Running ninja in directory /home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec/build
+Executing "ninja flash"...
+Done

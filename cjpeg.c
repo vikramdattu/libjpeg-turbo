@@ -912,6 +912,12 @@ main(int argc, char **argv)
     num_scanlines = (*src_mgr->get_pixel_rows) (&cinfo, src_mgr);
     (void)jpeg_write_scanlines(&cinfo, src_mgr->buffer, num_scanlines);
   }
+/* vikram's dattu's code:for comparison::
+  while (cinfo.next_scanline < cinfo.image_height) {
+      buf[0] = in_buf + cinfo.image_width * cinfo.next_scanline;
+      jpeg_write_scanlines(&cinfo, (JSAMPARRAY) buf, 1);
+  }
+*/
 
   /* Finish compression and release memory */
   (*src_mgr->finish_input) (&cinfo, src_mgr);
