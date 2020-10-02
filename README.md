@@ -354,3 +354,7 @@ SIMD extensions be disabled, either by passing an argument of `-DWITH_SIMD=0`
 to `cmake` when configuring the build or by setting the environment variable
 `JSIMD_FORCENONE` to `1` at run time, when testing libjpeg-turbo with Valgrind,
 MSan, or other memory debuggers.
+
+
+Decoding in memory instead of file:
+I have embedded the jpeg image in esp-idf and have modified the code in djpeg.c to be fit to decode the image(grayscale) in memory buffer. This is a trial code and has not been tested yet!
