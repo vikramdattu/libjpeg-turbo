@@ -18,14 +18,15 @@ extern const uint8_t raw_image_end[]   asm("_binary_esp_img_end");
 /*extern const uint8_t raw_image_start[] asm("_binary_raw_image_start");
 extern const uint8_t raw_image_end[]   asm("_binary_raw_image_end");*/
 
-int decode_jpeg(unsigned char *source_buf,
-                     unsigned long *source_buf_sz,
+int decode_jpeg(unsigned char *in_buf,
+                     unsigned long *in_buf_sz,
                      unsigned char *out_buf
                      );
 
-unsigned long in_buf_sz = 96 * 96 * 4;
-unsigned char in_buf[96 * 96 * 4];
+/*unsigned long in_buf_sz = 12*1024;/*12kB 12 times jpeg image size*/
+/*unsigned char in_buf[96 * 96 * 4];*/
 unsigned char out_buf[96 * 96 * 12];
+/*unsigned long out_buf_sz = 12*1024;*/
 
 static void jpeg_decoder_task(void *pvParameters)
 {
@@ -38,7 +39,7 @@ static void jpeg_decoder_task(void *pvParameters)
 
     ESP_LOGI(TAG, "Decoding an image");
 
-    decode_jpeg((unsigned char *) raw_image_start,in_buf,in_buf_sz,out_buf);
+    decode_jpeg((unsigned char *) raw_image_start,out_buf,out_buf_sz);
 
 
     /* sending an email */
@@ -46,7 +47,7 @@ static void jpeg_decoder_task(void *pvParameters)
     vTaskDelete(NULL);
 }
 
-void app main()
+void app_main()
 {
     int codec_task_stack_size = 12 * 1024;
     StackType_t *codec_task_stack = (StackType_t *) esp_audio_mem_calloc(1, codec_task_stack_size);
