@@ -838,6 +838,7 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
 {
   djpeg_dest_ptr dest_mgr;
   struct jpeg_decompress_struct cinfo;
+  cinfo.out_color_space=JCS_GRAYSCALE;/*out=grey*/
   struct jpeg_error_mgr jerr;
   #ifdef PROGRESS_REPORT
   struct cdjpeg_progress_mgr progress;
@@ -854,7 +855,7 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
   (void)jpeg_read_header(&cinfo, TRUE);
 
   /*specify data source for decompression*/
-  jpeg_mem_src(&cinfo, &in_buf, &in_buf_sz);
+ /* jpeg_mem_src(&cinfo, &in_buf, &in_buf_sz);*/
 
   /* Start decompressor */
   (void)jpeg_start_decompress(&cinfo);
@@ -865,7 +866,7 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
   while(cinfo.output_scanline < cinfo.output_height) {
      num_scanlines = jpeg_read_scanlines(&cinfo,out_buf,
                                         1);
-     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);/*study this*/
+     /*(*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);/*study this*/
      
   }
 
