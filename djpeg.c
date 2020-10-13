@@ -834,9 +834,9 @@ main(int argc, char **argv)
 }
 
 /* self demo code <--not part of official libjpeg */
-int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *out_buf)
+unsigned long decode_jpeg(unsigned char *in_buf,unsigned long in_buf_sz,unsigned char *out_buf)
 {
-  djpeg_dest_ptr dest_mgr;
+  unsigned long out_buf_sz;
   struct jpeg_decompress_struct cinfo;
   cinfo.out_color_space=JCS_GRAYSCALE;/*out=grey*/
   struct jpeg_error_mgr jerr;
@@ -855,21 +855,21 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
   (void)jpeg_read_header(&cinfo, TRUE);
 
   /*specify data source for decompression*/
- /* jpeg_mem_src(&cinfo, &in_buf, &in_buf_sz);*/
+  jpeg_mem_src(&cinfo, in_buf, in_buf_sz);
 
   /* Start decompressor */
   (void)jpeg_start_decompress(&cinfo);
   
   /*unsigned char *buf[3];*/
-  unsigned int num_scanlines;
+  /*unsigned int num_scanlines;*/
   /* Process data */
   while(cinfo.output_scanline < cinfo.output_height) {
-     num_scanlines = jpeg_read_scanlines(&cinfo,out_buf,
+     jpeg_read_scanlines(&cinfo,(JSAMPARRAY)out_buf,
                                         1);
-     /*(*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);/*study this*/
+     /*(*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);study this*/
      
   }
-
+  out_buf_sz=cinfo.output_height*cinfo.output_width;
   /*if ((tmp = jpeg_skip_scanlines(&cinfo, skip_end - skip_start + 1)) !=
        skip_end - skip_start + 1) {
      fprintf(stderr, "%s: jpeg_skip_scanlines() returned %d rather than %d\n",
@@ -890,13 +890,13 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
   end_progress_monitor((j_common_ptr)&cinfo);
   #endif
   
-  return 0;
+  return out_buf_sz;
 }
   /*
   put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
                 JDIMENSION rows_supplied)
-  /* used for unquantized full-color output */
-  /*{
+   used for unquantized full-color output 
+  {
     tga_dest_ptr dest = (tga_dest_ptr)dinfo;
     register JSAMPROW inptr;
     register char *outptr;
@@ -905,7 +905,7 @@ int decode_jpeg(unsigned char *in_buf,unsigned long *in_buf_sz,unsigned char *ou
     inptr = dest->pub.buffer[0];
     outptr = dest->iobuffer;
     for (col = cinfo->output_width; col > 0; col--) {
-      outptr[0] = (char)GETJSAMPLE(inptr[2]); /* RGB to BGR order 
+      outptr[0] = (char)GETJSAMPLE(inptr[2]); // RGB to BGR order 
       outptr[1] = (char)GETJSAMPLE(inptr[1]);
       outptr[2] = (char)GETJSAMPLE(inptr[0]);
       inptr += 3, outptr += 3;

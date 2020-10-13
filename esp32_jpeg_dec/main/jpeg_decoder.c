@@ -11,21 +11,19 @@
 static const char *TAG="jpeg_decoding";
 
 
-extern const uint8_t raw_image_start[] asm("_binary_esp_img_start");
-extern const uint8_t raw_image_end[]   asm("_binary_esp_img_end");
+extern const uint8_t raw_image_start[] asm("_binary_esp_img_jpeg_start");
+extern const uint8_t raw_image_end[]   asm("_binary_esp_img_jpeg_end");
 
 
 /*extern const uint8_t raw_image_start[] asm("_binary_raw_image_start");
 extern const uint8_t raw_image_end[]   asm("_binary_raw_image_end");*/
 
-int decode_jpeg(unsigned char *in_buf,
-                     unsigned long *in_buf_sz,
-                     unsigned char *out_buf
-                     );
+int decode_jpeg(unsigned char *in_buf,unsigned long in_buf_sz,unsigned char *out_buf);
 
-/*unsigned long in_buf_sz = 12*1024;/*12kB 12 times jpeg image size*/
+unsigned long in_buf_sz = 12*1024;/*12kB 12 times jpeg image size*/
 /*unsigned char in_buf[96 * 96 * 4];*/
 unsigned char out_buf[96 * 96 * 12];
+unsigned long out_buf_sz;
 /*unsigned long out_buf_sz = 12*1024;*/
 
 static void jpeg_decoder_task(void *pvParameters)
@@ -39,11 +37,11 @@ static void jpeg_decoder_task(void *pvParameters)
 
     ESP_LOGI(TAG, "Decoding an image");
 
-    decode_jpeg((unsigned char *) raw_image_start,out_buf,out_buf_sz);
-
+    out_buf_sz=decode_jpeg((unsigned char *)raw_image_start,in_buf_sz,out_buf);
+    ESP_LOGD(TAG, "out buf sz=%ld", out_buf_sz);
 
     /* sending an email */
-    send_email(out_buf);
+    send_email(out_buf,out_buf_sz);
     vTaskDelete(NULL);
 }
 
