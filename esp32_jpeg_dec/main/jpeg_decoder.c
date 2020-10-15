@@ -48,17 +48,17 @@ static void jpeg_decoder_task(void *pvParameters)
 void app_main()
 {
     int codec_task_stack_size = 12 * 1024;
-    StackType_t *codec_task_stack = (StackType_t *) esp_audio_mem_calloc(1, codec_task_stack_size);
-    if(codec_task_stack == NULL) {
-        ESP_LOGE(TAG, "Error allocating stack for mp3 decoder");
-        return;
-    }
-
-    StaticTask_t *codec_task_buf = (StaticTask_t *) heap_caps_calloc(1, sizeof(StaticTask_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
     init_smtp_client();
-    ESP_LOGI(TAG, "Creating jpeg task");
+    //StackType_t *codec_task_stack = (StackType_t *) esp_audio_mem_calloc(1, codec_task_stack_size);
+    //if(codec_task_stack == NULL) {
+    //    ESP_LOGE(TAG, "Error allocating stack for mp3 decoder");
+    //    return;
+    //}
 
+    //StaticTask_t *codec_task_buf = (StaticTask_t *) heap_caps_calloc(1, sizeof(StaticTask_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    //ESP_LOGI(TAG, "Creating jpeg task");
 
+#if 0
     xTaskCreateStatic(&jpeg_decoder_task,
                       "jpeg_dec_task",
                       codec_task_stack_size,
@@ -66,6 +66,13 @@ void app_main()
                       5,
                       codec_task_stack,
                       codec_task_buf);
-
+#else
+    xTaskCreate(&jpeg_decoder_task,
+                "jpeg_dec_task",
+                codec_task_stack_size,
+                NULL,
+                5,
+                NULL);
+#endif
     vTaskDelay(1000);
 }

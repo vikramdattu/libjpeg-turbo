@@ -6,4 +6,4 @@ set(EXTRA_COMPONENT_DIRS ../ $ENV{IDF_PATH}/examples/common_components/protocol_
 #set(EXTRA_COMPONENT_DIRS )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(jpeg-enc)
+project(jpeg-dec)

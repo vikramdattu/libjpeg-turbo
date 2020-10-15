@@ -3,6 +3,6 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := jpeg-enc
+PROJECT_NAME := jpeg-dec
 
 include $(IDF_PATH)/make/project.mk
