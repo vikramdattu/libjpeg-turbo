@@ -1067,6 +1067,8 @@ EXTERN(boolean) jpeg_read_icc_profile(j_decompress_ptr cinfo,
                                       JOCTET **icc_data_ptr,
                                       unsigned int *icc_data_len);
 
+EXTERN(unsigned long) decode_jpeg(unsigned char *in_buf,unsigned long in_buf_sz,
+                        unsigned char *out_buf);
 
 /* These marker codes are exported since applications and data source modules
  * are likely to want to use them.
