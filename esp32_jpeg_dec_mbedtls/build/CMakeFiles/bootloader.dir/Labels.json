@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader-complete.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+		},
+		{
+			"file" : "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"bootloader"
+		],
+		"name" : "bootloader"
+	}
+}

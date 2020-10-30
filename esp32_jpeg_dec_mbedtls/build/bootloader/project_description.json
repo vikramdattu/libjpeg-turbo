@@ -1,0 +1,20 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/home/suyash/esp/esp-idf/components/bootloader/subproject",
+    "build_dir":          "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader",
+    "config_file":        "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "v4.3-dev-907-g6c17e3a64-dirty",
+    "target":             "esp32",
+    "phy_data_partition": "",
+    "monitor_baud" :      "115200",
+    "monitor_toolprefix": "xtensa-esp32-elf-",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/home/suyash/esp/esp-idf/components/efuse/Kconfig;/home/suyash/esp/esp-idf/components/esp32/Kconfig;/home/suyash/esp/esp-idf/components/esp_common/Kconfig;/home/suyash/esp/esp-idf/components/log/Kconfig;/home/suyash/esp/esp-idf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/suyash/esp/esp-idf/components/bootloader/Kconfig.projbuild;/home/suyash/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/home/suyash/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_rom", "esptool_py", "log", "main", "micro-ecc", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/home/suyash/esp/esp-idf/components/bootloader", "/home/suyash/esp/esp-idf/components/bootloader_support", "/home/suyash/esp/esp-idf/components/efuse", "/home/suyash/esp/esp-idf/components/esp32", "/home/suyash/esp/esp-idf/components/esp_common", "/home/suyash/esp/esp-idf/components/esp_rom", "/home/suyash/esp/esp-idf/components/esptool_py", "/home/suyash/esp/esp-idf/components/log", "/home/suyash/esp/esp-idf/components/bootloader/subproject/main", "/home/suyash/esp/esp-idf/components/bootloader/subproject/components/micro-ecc", "/home/suyash/esp/esp-idf/components/partition_table", "/home/suyash/esp/esp-idf/components/soc", "/home/suyash/esp/esp-idf/components/spi_flash", "/home/suyash/esp/esp-idf/components/xtensa", "" ]
+}
