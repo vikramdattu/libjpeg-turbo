@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/CMakeFiles/bootloader-complete.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule

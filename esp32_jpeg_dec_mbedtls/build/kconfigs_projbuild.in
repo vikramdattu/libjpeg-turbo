@@ -1,0 +1,6 @@
+source "/home/suyash/esp/esp-idf/components/app_update/Kconfig.projbuild"
+source "/home/suyash/esp/esp-idf/components/bootloader/Kconfig.projbuild"
+source "/home/suyash/esp/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "/home/suyash/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+source "/home/suyash/esp/esp-idf/examples/common_components/protocol_examples_common/Kconfig.projbuild"
+source "/home/suyash/esp/esp-idf/libjpeg-turbo-feature-esp32_build/esp32_jpeg_dec_mbedtls/main/Kconfig.projbuild"
