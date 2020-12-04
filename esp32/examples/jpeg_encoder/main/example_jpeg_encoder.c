@@ -13,8 +13,7 @@
 #include <esp_err.h>
 #include "esp_audio_mem.h"
 #include "smtp_client.h"
-#include "../../../components/jpeg_turbo_codec/jpeg_turbo_enc.h"
-#include "../../../components/jpeg_turbo_codec/Error_declarations.h"
+#include "jpeg_turbo_enc.h"
 
 #define IMAGE_HEIGHT 94
 #define IMAGE_WIDTH 94
@@ -35,28 +34,30 @@ static void jpeg_encoder_task(void *pvParameters)
     enc.image_width = IMAGE_WIDTH;
     enc.out_buf_sz = IMAGE_WIDTH * IMAGE_HEIGHT * 4;
     enc.in_col_components = 3;
-    enc.in_col_space = JCS_RGB;
+    enc.in_col_space = JPEG_COLOR_RGB;
     enc.output_buffer = malloc(IMAGE_HEIGHT * IMAGE_WIDTH * 4);
     enc.inp_buf = raw_image_start;
     enc.quality = QUALITY;
 
     ret = encode_image(&enc);
-    if (ret == ERR_INVALID_ARG) {
+    if (ret == JPEG_ERR_INVALID_ARG) {
         ESP_LOGE(TAG, "Invalid Arguments Passed\tAborting program");
-        goto end_func;
+        goto task_exit;
     }
 
-    if (ret == OUT_OF_MEMORY) {
+    if (ret == JPEG_ERR_NOMEM) {
         ESP_LOGE(TAG, "Out of memory\tAborting program");
-        goto end_func;
+        goto task_exit;
     }
 
-    if (ret == SUCCESS) {
+    if (ret == JPEG_SUCCESS) {
         ESP_LOGI(TAG, "Success");
     }
     /* sending an email */
     send_email(enc.output_buffer, enc.out_buf_sz);
-    end_func : free(enc.output_buffer);
+
+task_exit:
+    free(enc.output_buffer);
     vTaskDelete(NULL);
 }
 

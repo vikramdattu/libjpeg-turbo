@@ -3,16 +3,10 @@
 #include "freertos/task.h"
 #include <esp_log.h>
 #include <esp_err.h>
-#include "jpeglib.h"
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include <esp_log.h>
-#include <esp_err.h>
 #include "esp_audio_mem.h"
 #include "smtp_client.h"
-#include "../../components/jpeg_turbo_codec/jpeg_turbo_dec.h"
-#include "../../components/jpeg_turbo_codec/jpeg_turbo_enc.h"
+#include "jpeg_turbo_dec.h"
+#include "jpeg_turbo_enc.h"
 #include "mbedtls/md5.h"
 
 #define INPUT_BUF_SIZE (20 * 1024)
@@ -21,8 +15,8 @@
 
 static const char *TAG = "jpeg-testing";
 
-extern uint8_t raw_image_start[] asm("_binary_test2_100_jpeg_start");
-extern uint8_t raw_image_end[]   asm("_binary_test2_100_jpeg_end");
+extern uint8_t image_start[] asm("_binary_test_10_jpeg_start");
+extern uint8_t image_end[]   asm("_binary_test_10_jpeg_end");
 
 static const char hex[] = "0123456789abcdef";
 
@@ -42,25 +36,25 @@ static void jpeg_test_task(void *pvParameters)
     decoder_context dec;
     dec.in_buf_sz = INPUT_BUF_SIZE;
     dec.out_buf = malloc(INP_IMG_WIDTH * INP_IMG_HEIGHT * 12);
-    dec.out_color_space = JCS_RGB;
-    dec.in_buf = raw_image_start;
+    dec.out_color_space = JPEG_COLOR_RGB;
+    dec.in_buf = image_start;
     ESP_LOGI(TAG, "Decoding an image");
     ret = decode_jpeg(&dec);
 
-    if (ret == ERR_INVALID_ARG) {
+    if (ret == JPEG_ERR_INVALID_ARG) {
         ESP_LOGE(TAG, "Invalid Arguments Passed");
-        goto end_func;
+        goto task_exit;
     }
 
-    if (ret == OUT_OF_MEMORY) {
+    if (ret == JPEG_ERR_NOMEM) {
         ESP_LOGE(TAG, "Out of memory");
-        goto end_func;
+        goto task_exit;
     }
-    
-    if (ret == SUCCESS) {
+
+    if (ret == JPEG_SUCCESS) {
         ESP_LOGI(TAG, "Success");
-    }    
-    
+    }
+
     /* Calculate MD5sum */
     mbedtls_md5_context ctx;
     mbedtls_md5_init(&ctx);
@@ -81,7 +75,9 @@ static void jpeg_test_task(void *pvParameters)
 
     free(md5_buf);
     free(md5_hex);
-    end_func : free(dec.out_buf);
+
+task_exit:
+    free(dec.out_buf);
     vTaskDelete(NULL);
 }
 

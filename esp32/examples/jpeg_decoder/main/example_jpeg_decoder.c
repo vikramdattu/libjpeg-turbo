@@ -5,8 +5,7 @@
 #include <esp_err.h>
 #include "esp_audio_mem.h"
 #include "smtp_client.h"
-#include "../../../components/jpeg_turbo_codec/jpeg_turbo_dec.h"
-#include "../../../components/jpeg_turbo_codec/Error_declarations.h"
+#include "jpeg_turbo_dec.h"
 
 #define INPUT_BUF_SIZE (20 * 1024)
 #define INP_IMG_WIDTH 94
@@ -24,27 +23,29 @@ static void jpeg_decoder_task(void *pvParameters)
     decoder_context dec;
     dec.in_buf_sz = INPUT_BUF_SIZE;
     dec.out_buf = malloc(INP_IMG_WIDTH * INP_IMG_HEIGHT * 12);
-    dec.out_color_space = JCS_RGB;
+    dec.out_color_space = JPEG_COLOR_RGB;
     dec.in_buf = raw_image_start;
     ESP_LOGI(TAG, "Decoding an image");
     ret = decode_jpeg(&dec);
 
-    if (ret == ERR_INVALID_ARG) {
+    if (ret == JPEG_ERR_INVALID_ARG) {
         ESP_LOGE(TAG, "Invalid Arguments Passed");
-        goto end_func;
+        goto task_exit;
     }
 
-    if (ret == OUT_OF_MEMORY) {
+    if (ret == JPEG_ERR_NOMEM) {
         ESP_LOGE(TAG, "Out of memory");
-        goto end_func;
+        goto task_exit;
     }
-    
-    if (ret == SUCCESS) {
+
+    if (ret == JPEG_SUCCESS) {
         ESP_LOGI(TAG, "Success");
     }
     /* sending an email */
     send_email(dec.out_buf, dec.out_buf_sz);
-    end_func : free(dec.out_buf);
+
+task_exit:
+    free(dec.out_buf);
     vTaskDelete(NULL);
 }
 

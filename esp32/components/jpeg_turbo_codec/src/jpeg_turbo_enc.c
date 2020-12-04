@@ -1,19 +1,22 @@
 #include "jpeg_turbo_enc.h"
-#include "Error_declarations.h"
 #include <esp_log.h>
+
+#include "jpeglib.h"
+#include "cderror.h"
+
 static const char *TAG = "jpeg_enc";
+
 static const char *const cdjpeg_message_table[] = {
     NULL
 };
 
 int encode_image(encoder_context *mgr)
 {
-
     if (mgr->output_buffer == NULL || mgr->image_height == 0 ||
         mgr->image_width == 0 || mgr->in_col_components == 0 ||
-        mgr->in_col_space == NULL || mgr->inp_buf == NULL ||
+        mgr->in_col_space == JPEG_COLOR_UNKNOWN || mgr->inp_buf == NULL ||
         mgr->out_buf_sz == 0) {
-        return ERR_INVALID_ARG;
+        return JPEG_ERR_INVALID_ARG;
     }
 
     struct jpeg_compress_struct cinfo;
@@ -64,13 +67,13 @@ int encode_image(encoder_context *mgr)
     while (cinfo.next_scanline < (cinfo.image_height)) {
         buf[0] = mgr->inp_buf + (cinfo.image_width * cinfo.next_scanline * cinfo.input_components);
         if(cinfo.next_scanline >= cinfo.image_height) {
-            return OUT_OF_MEMORY;
-        }        
+            return JPEG_ERR_NOMEM;
+        }
         jpeg_write_scanlines(&cinfo, (JSAMPARRAY) buf, 1);
     }
 
     if(cinfo.next_scanline < cinfo.image_height) {
-        return OUT_OF_MEMORY;
+        return JPEG_ERR_NOMEM;
     }
 
     /* Finish compression and release memory */
@@ -81,5 +84,5 @@ int encode_image(encoder_context *mgr)
     end_progress_monitor((j_common_ptr)&cinfo);
 #endif
 
-    return SUCCESS;                     
+    return JPEG_SUCCESS;
 }
